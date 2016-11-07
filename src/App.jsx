@@ -60,7 +60,9 @@ class App extends Component {
     if(event.charCode === 13) {
       let newNotif = {type: "postMessage", username: this.state.currentUser.name, content: event.target.value}
       this.ws.send(JSON.stringify(newNotif))
+      //event.target.value("")
     }
+    event.target.value("")
   }
 
   username = (event) => {
@@ -91,11 +93,7 @@ class App extends Component {
     console.log("Rendering <App/>");
     return (
       <div className="wrapper">
-        <nav>
-          <h1>Chatty</h1>
-          <h2>`{this.state.server}`</h2>
 
-        </nav>
         <Bar usersOnline = {this.state.users}/>
         <MessageList messages = { this.state.messages }
                      messageSystem = { this.state.messageSystem }/>
