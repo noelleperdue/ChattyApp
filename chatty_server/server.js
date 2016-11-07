@@ -13,18 +13,22 @@ const server = express()
 const wss = new SocketServer({ server });
 
 let message;
+let counter = 0;
 
 wss.on('connection', (ws) => {
   console.log('Client connected');
-  var usersOnline = wss.clients.length;
-  var Online = {usersOnline: usersOnline};
-  console.log(usersOnline);
+  counter++;
+  wss.broadcast ({type: 'counter', count: counter})
 
   wss.broadcast(message);
 
   ws.on('message', handleMessage);
 
-  ws.on('close', () => console.log('Client disconnected'));
+  ws.on('close', () => {
+    console.log('Client disconnected')
+    counter--;
+    wss.broadcast ({type: 'counter', count: counter})
+  });
 });
 
 wss.broadcast = function(data) {
